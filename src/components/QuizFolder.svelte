@@ -1,7 +1,7 @@
 <script>
 	import QuizFile from '../components/QuizFile.svelte';
 	import { slide } from 'svelte/transition'
-	import { quiz } from '../stores/stores.js';
+	import { quiz, enabled } from '../stores/stores.js';
 
 	export let name;
 	export let id;
@@ -22,6 +22,7 @@
 	$: visibility = determineVisibility($quiz);
 
 	async function updateQuiz() {
+		toggleEnabled()
 		const res = await fetch(
 			`https://enterprise-search-develop.mytomorrows.com/v01/search/gatekeeper_questionnaire`, {
 				method: 'POST',
@@ -31,16 +32,20 @@
 				body: JSON.stringify($quiz)
 			}
 		)
-
+		
 		if (res.ok) {
 			let response = await res.json()
 			$quiz = response;
+			toggleEnabled()
 		} else {
 			throw Error();
 		}
 	}
 
+	$: answer = ''
+
 	function processAnswer (value) {
+		answer = value
 		$quiz.answered_question = {
 			"criterium":id,
 			"answer":value
@@ -54,19 +59,46 @@
 		disabled = !disabled;
 	}
 
+	function toggleEnabled() {
+		if ($enabled === '') {
+			$enabled = 'cursor-not-allowed opacity-50'
+		} else {
+			$enabled = ''
+		}
+		
+	}
+
+	$: color = getColor(answer)
+	let text;
+	function getColor (answer) {
+		if (answer === true) {
+			text = "Yes"
+			return 'green'
+		} else if (answer === "SKIP") {
+			text = "Skipped"
+			return 'gray'
+		} else if (answer) {
+			text = answer
+			return 'gray'
+		} else  {
+			text = "No"
+			return 'red'
+		}
+	}
+
 </script>
 <div class={visibility}>
 	{#if (visibility === 'visible px-4 py-1')}
-	<span class="text-black row">{name}</span>
-	{#if (!disabled)}
-	<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-green-500 row'>Y</button>
-	<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 row' >N</button>
-	<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row' >Skip</button>
-	{:else}
-	<span class='text-gray-500'>Answered</span>
-	{/if}
+	<span class="text-black">{name}</span>
+		{#if (!disabled)}
+			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-green-500 {$enabled}'>Y</button>
+			<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 {$enabled}' >N</button>
+			<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 {$enabled}' >Skip</button>
+		{:else}
+			<span class='text-{color}-500 capitalize opacity-50'>{text}</span>
+		{/if}
 	{:else if (visibility === 'preview px-4 py-1')}
-	<span class="text-gray-300 row">{name}</span>
+		<span class="text-gray-300 row">{name}</span>
 	{/if}
 
 	<ul>
@@ -84,7 +116,7 @@
 </div>
 <style>
 	span {
-		padding: 0 0 0 1.5em;
+		padding: 0 0 0 0.2em;
 		background: url(tutorial/icons/folder.svg) 0 0.1em no-repeat;
 		background-size: 1em 1em;
 		font-weight: bold;

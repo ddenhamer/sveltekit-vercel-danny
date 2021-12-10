@@ -2,15 +2,15 @@
 	export let name;
     export let id;
 	export let qtype;
-	import { quiz } from '../stores/stores.js';
+	import { quiz, enabled } from '../stores/stores.js';
 	
 	$quiz = $quiz
 
 	function determineVisibility ($quiz) {
 		if ($quiz.show.includes(id)) {
-			return "visible px-10 py-1"
+			return "visible px-5 py-1"
 		} else if ($quiz.preview.includes(id)) {
-			return "preview px-10 py-1"
+			return "preview px-5 py-1"
 		} else {
 			return "hidden"
 		}
@@ -19,6 +19,7 @@
 	$: visibility = determineVisibility($quiz);
 
 	async function updateQuiz() {
+		toggleEnabled()
 		const res = await fetch(
 			`https://enterprise-search-develop.mytomorrows.com/v01/search/gatekeeper_questionnaire`, {
 				method: 'POST',
@@ -28,16 +29,17 @@
 				body: JSON.stringify($quiz)
 			}
 		)
-
 		if (res.ok) {
 			let response = await res.json()
 			$quiz = response;
+			toggleEnabled()
 		} else {
 			throw Error();
 		}
 	}
 
 	function processAnswer (value) {
+		answer = value
 		$quiz.answered_question = {
 			"criterium":id,
 			"answer":value
@@ -51,30 +53,57 @@
 		disabled = !disabled;
 	}
 
+	function toggleEnabled() {
+		if ($enabled === '') {
+			$enabled = 'cursor-not-allowed opacity-50'
+		} else {
+			$enabled = ''
+		}
+		
+	}
+
 	let answer = 0;
 
 	let input = "appearance-none border rounded w-20 py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 
+	$: color = getColor(answer)
+	let text;
+	function getColor (answer) {
+		if (answer === true) {
+			text = "Yes"
+			return 'green'
+		} else if (answer === "SKIP") {
+			text = "Skipped"
+			return 'gray'
+		} else if (answer) {
+			text = answer
+			return 'gray'
+		} else  {
+			text = "No"
+			return 'red'
+		}
+	}
+
 </script>
 
 <div class={visibility}>
-	{#if (visibility === 'visible px-10 py-1')}
-		<a class="text-black" href='/c/{id}'><span>{name}</span></a>
+	{#if (visibility === 'visible px-5 py-1')}
+		<span class="text-black">{name}</span>
 		{#if (!disabled)}
 			{#if (qtype === 'BOOLEAN')}
-				<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-green-500'>Y</button>
-				<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500' >N</button>
-				<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row' >Skip</button>
+			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-green-500 {$enabled}'>Y</button>
+			<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 {$enabled}' >N</button>
+			<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row {$enabled}' >Skip</button>
 			{:else if (qtype === 'FLOAT')}
 				<input class={input} bind:value={answer}>
 				<button on:click={() => processAnswer(answer)} on:click={toggleDisabled} class='btn bg-blue-500'>Submit</button>
 				<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row' >Skip</button>
 			{/if}
 		{:else}
-			<span class='text-gray-500'>Answered</span>
+			<span class='text-{color}-500 opacity-50 font-bold'>{text}</span>
 		{/if}
-	{:else if (visibility === 'preview px-10 py-1')}
-		<a class="text-gray-300" href='/c/{id}'><span>{name}</span></a>
+	{:else if (visibility === 'preview px-5 py-1')}
+		<span class="text-gray-300">{name}</span>
 	{/if}
 </div>
 <style>

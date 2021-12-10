@@ -8,3 +8,5 @@ export const quiz = writable({
     answered_question:{},
     ineligible:[]
 });
+
+export const enabled = writable('')

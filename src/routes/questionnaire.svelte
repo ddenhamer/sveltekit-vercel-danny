@@ -1,6 +1,6 @@
 <script>
 	import QuizFolder from '../components/QuizFolder.svelte';
-	import { quiz } from '../stores/stores.js';
+	import { quiz, enabled } from '../stores/stores.js';
 	import GenerateTsr from '../components/GenerateTSR.svelte';
 
 	const fetchChildren = (async () => {
@@ -16,7 +16,7 @@
 		return await response.json()
 	})()
 
-	let trial_id = ""
+	let patient_id = ""
 	
 	function loadDMD() {
 		$quiz.trial_ids = [
@@ -29,9 +29,19 @@
 		];
 	}
 	
-	let input = "shadow appearance-none border-2 border-white rounded w-36 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500"
+	let input = "shadow appearance-none border-2 border-white rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500"
 	
+	function toggleEnabled() {
+		if ($enabled === '') {
+			$enabled = 'cursor-not-allowed opacity-50'
+		} else {
+			$enabled = ''
+		}
+		
+	}
+
 	async function updateQuiz() {
+		toggleEnabled()
 		const res = await fetch(
 			`https://enterprise-search-develop.mytomorrows.com/v01/search/gatekeeper_questionnaire`, {
 				method: 'POST',
@@ -41,56 +51,58 @@
 				body: JSON.stringify($quiz)
 			}
 			)
-			
 			if (res.ok) {
 				let response = await res.json()
 				$quiz = response;
-			} else {
-				throw Error();
-			}
+				toggleEnabled()
+		} else {
+			throw Error();
 		}
+	}
 		
-		$quiz = $quiz
-		
-	function addToArray() {
-		$quiz.trial_ids = [...$quiz.trial_ids, trial_id];
-		trial_id = '';
-	};
-	
 </script>
 <main>
-	<div class="shadow bg-gray-200 w-3/5 p-8 mt-24 mb-8 rounded-md grid grid-cols-2 gap-8">
-		<div>
-			<p class="font-bold my-2">Add Trial IDs:</p>
-			<input class={input} bind:value={trial_id}>
-			<button class='btn bg-green-500 py-1 my-2' on:click={addToArray}>Add Trial ID</button>
-			<br>
-		</div>
-		<div>
-			<p class="font-bold my-2">Preset Conditions:</p>
-			<button class='bg-purple-300 rounded-sm text-white p-1 mb-1' on:click={loadDMD}>DMD</button>
-			<button class='bg-purple-300 rounded-sm text-white p-1 mb-1' on:click={loadPyramid1}>PYRAMID-1</button>
-			<br>
-		</div>
+	<div class="shadow bg-gray-200 w-3/5 p-8 mt-24 mb-8 rounded-md">
+		<div class="grid grid-cols-2 gap-8">
 			<div>
-				{#if ($quiz.trial_ids.length === 0)}
-					<button class="btn bg-gray-400 p-2 cursor-not-allowed" on:click={updateQuiz}>Start Patient Screening</button>
-				{:else}
-					<button class="btn bg-green-500 p-2" on:click={updateQuiz}>Start Patient Screening</button>
-				{/if}
+				<p class="font-bold my-2">Patient ID</p>
+				<input class={input} bind:value={patient_id} placeholder="e.g. P1234">
 			</div>
-		<div>
-
+			<div>
+				<p class="font-bold my-2">Preset Conditions:</p>
+				<button class='bg-purple-300 rounded-sm text-white py-1 px-2 mb-1' on:click={loadDMD}>DMD</button>
+				<button class='bg-purple-300 rounded-sm text-white py-1 px-2 mb-1' on:click={loadPyramid1}>PYRAMID-1</button>
+				<br>
+			</div>
 		</div>
+		<div class="mt-8">
+			{#if ($quiz.trial_ids.length === 0)}
+				<button class="btn bg-gray-400 p-2 cursor-not-allowed" on:click={updateQuiz}>Start Patient Screening</button>
+			{:else}
+				<button class="btn bg-green-500 p-2" on:click={updateQuiz}>Start Patient Screening</button>
+			{/if}
+		</div>
+	<div>
+	</div>
 	</div>
 
 	<div class="z-5 shadow bg-white rounded-md p-4 w-1/3 fixed top-24 right-16">
-		<span class='font-bold text-green-500'>Eligible</span>
+		<span class='font-bold text-green-500'>Eligible</span><br>
+		<!-- {#each $quiz.trial_ids as trial_id}
+		<a href="https://www.mytomorrows.com/search/en/study-details?studyId={trial_id}" target="_blank">	
+			<span class='hover:underline'>{trial_id}, </span>
+		</a>
+		{/each} -->
 		<h2>{$quiz.trial_ids.join(', ')}</h2>
 		<br>
-		<span class='font-bold text-red-600'>Ineligible</span>
+		<span class='font-bold text-red-600'>Ineligible</span><br>
+		<!-- {#each $quiz.ineligible as trial_id}
+			<a href="https://www.mytomorrows.com/search/en/study-details?studyId={trial_id}" target="_blank">	
+				<span class='hover:underline'>{trial_id}, </span>
+			</a>
+		{/each} -->
 		<h2>{$quiz.ineligible.join(', ')}</h2>
-		<GenerateTsr trial_ids={$quiz.trial_ids}/>
+		<GenerateTsr trial_ids={$quiz.trial_ids} patient_id={patient_id}/>
 	</div>
 
 	<div>
@@ -106,10 +118,6 @@
 			<p>An error occurred!</p>
 		{/await}
 	</div>
-<!-- 
-	<p>whitelist: {JSON.stringify($quiz.whitelist)}</p>
-	<p>preview: {JSON.stringify($quiz.preview)}</p>
-	<p>show: {JSON.stringify($quiz.show)}</p> -->
 </main>
 <style>
 	.btn {
