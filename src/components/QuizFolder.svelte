@@ -73,16 +73,16 @@
 	function getColor (answer) {
 		if (answer === true) {
 			text = "Yes"
-			return 'green'
+			return 'text-green-500'
 		} else if (answer === "SKIP") {
 			text = "Skipped"
-			return 'gray'
+			return 'text-gray-500'
 		} else if (answer) {
 			text = answer
-			return 'gray'
-		} else  {
+			return 'text-gray-500'
+		} else {
 			text = "No"
-			return 'red'
+			return 'text-red-500'
 		}
 	}
 
@@ -95,10 +95,10 @@
 			<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 {$enabled}' >N</button>
 			<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 {$enabled}' >Skip</button>
 		{:else}
-			<span class='text-{color}-500 capitalize opacity-50'>{text}</span>
+			<span class='{color} capitalize opacity-50'>{text}</span>
 		{/if}
 	{:else if (visibility === 'preview px-4 py-1')}
-		<span class="text-gray-300 row">{name}</span>
+		<span class="text-gray-300">{name}</span>
 	{/if}
 
 	<ul>
