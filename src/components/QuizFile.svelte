@@ -59,20 +59,22 @@
 
 <div class={visibility}>
 	{#if (visibility === 'visible px-10 py-1')}
-		<a class="text-black" href='/c/{id}'><span>{name} [{id}]</span></a>
+		<a class="text-black" href='/c/{id}'><span>{name}</span></a>
 		{#if (!disabled)}
 			{#if (qtype === 'BOOLEAN')}
 				<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-green-500'>Y</button>
 				<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500' >N</button>
+				<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row' >Skip</button>
 			{:else if (qtype === 'FLOAT')}
 				<input class={input} bind:value={answer}>
 				<button on:click={() => processAnswer(answer)} on:click={toggleDisabled} class='btn bg-blue-500'>Submit</button>
+				<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row' >Skip</button>
 			{/if}
 		{:else}
 			<span class='text-gray-500'>Answered</span>
 		{/if}
 	{:else if (visibility === 'preview px-10 py-1')}
-		<a class="text-gray-300" href='/c/{id}'><span>{name} [{id}]</span></a>
+		<a class="text-gray-300" href='/c/{id}'><span>{name}</span></a>
 	{/if}
 </div>
 <style>

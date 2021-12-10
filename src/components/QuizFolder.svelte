@@ -57,15 +57,16 @@
 </script>
 <div class={visibility}>
 	{#if (visibility === 'visible px-4 py-1')}
-	<span class="text-black row">{name} [{id}]</span>
+	<span class="text-black row">{name}</span>
 	{#if (!disabled)}
 	<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-green-500 row'>Y</button>
 	<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 row' >N</button>
+	<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row' >Skip</button>
 	{:else}
 	<span class='text-gray-500'>Answered</span>
 	{/if}
 	{:else if (visibility === 'preview px-4 py-1')}
-	<span class="text-gray-300 row">{name} [{id}]</span>
+	<span class="text-gray-300 row">{name}</span>
 	{/if}
 
 	<ul>
@@ -89,17 +90,6 @@
 		font-weight: bold;
 		cursor: pointer;
 	}
-
-	/* ul {
-		padding: 0.2em 0 0 0.5em;
-		margin: 0 0 0 0.5em;
-		list-style: none;
-		border-left: 1px solid #eee;
-	}
-
-	li {
-		padding: 0.2em 0;
-	} */
 
 	.btn {
     	@apply px-2 rounded-sm text-white;

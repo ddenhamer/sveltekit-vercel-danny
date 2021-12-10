@@ -5,5 +5,6 @@ export const quiz = writable({
     mode:"library",
     show:[],
     preview:[],
-    answered_question:{}
+    answered_question:{},
+    ineligible:[]
 });
