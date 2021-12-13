@@ -16,7 +16,16 @@
 	
 </script>
 <main>
-	<div class='my-24'>
+	<div class="bg-blue-100 rounded-md w-full mt-24 mb-8 px-8 py-4">
+		<span class="font-bold">Link to instructions:</span>
+		<ul>
+			<li>
+		<a href='https://mytomorrows-my.sharepoint.com/personal/danny_den_hamer_mytomorrows_com/_layouts/15/guestaccess.aspx?guestaccesstoken=ysydjyPPGMyC2BZ9VVCO4TagjrY3344WyyjfnUIl7t4%3D&docid=2_01cd29d7f3249410a8e464977a1450f02&rev=1&e=iACeU0'><span class='hover:underline'>- Criteria Tree</span></a>
+			</li>
+		</ul>
+	</div>
+
+	<div>
     {#await fetchChildren}
 	    <p>...waiting</p>
     {:then data}
@@ -26,3 +35,14 @@
     {/await}
 	</div>
 </main>
+<style>
+	ul {
+		padding: 0.2em 0 0 0.5em;
+		margin: 0 0 0 0.5em;
+		list-style: none;
+	}
+
+	li {
+		padding: 0.2em 0;
+	}
+</style>

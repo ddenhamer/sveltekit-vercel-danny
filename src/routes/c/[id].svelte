@@ -41,15 +41,27 @@
     export let treenode;
     let result = null;
     let ask_to_options = [
-        'patient', 'patient-nav', null
+        'patient', 'physician', 'patient-nav'
     ]
     let type_options = [
-         'BOOLEAN', 'FLOAT', null
+         'BOOLEAN', 'FLOAT'
     ]
     let criterium_options = [
-       true, false
+       "Criterium", "Gatekeeper"
     ]
    
+    $: criterium_type = "Criterium"
+
+    $: treenode.criterium = mapCriteriumType(criterium_type)
+
+    function mapCriteriumType (cstring) {
+        if (cstring === 'Criterium') {
+            return true
+        } else {
+            return false
+        }
+    }
+
     async function setNode(treenode) {
         console.log(treenode)
 		const res = await fetch(
@@ -68,7 +80,7 @@
 
 </script>
 <main>    
-    <div class="my-8 mx-8">
+    <div class="my-24 mx-8">
         <table class="table-auto min-w-full shadow-md rounded">
         <thead class="bg-gray-50">
             <tr>
@@ -86,40 +98,49 @@
             <td>{treenode.parent_id}</td>
             </tr>
             <tr>
-            <td>Criterium</td>
+            <td>Type</td>
             {#if treenode.new !== true}
-                <td>{treenode.criterium}</td>
+                <td>{criterium_type}</td>
             {:else}
                 <td>
-                <select bind:value={treenode.criterium}>
+                <select bind:value={criterium_type}>
                     {#each criterium_options as option}
                         <option value={option}>
                             {option}
                         </option>
                     {/each}
                 </select>
-                </td>
+            </td>
             {/if}
             </tr>
             <tr>
-            <td>Type</td>
+            <td>Answer Type</td>
             {#if treenode.new !== true}
-                <td>{treenode.criterium}</td>
+                <td>{treenode.type}</td>
             {:else}
                 <td>
-                <select bind:value={treenode.type}>
+                
+                {#if treenode.criterium === true}
+                    <select bind:value={treenode.type}>
                     {#each type_options as option}
                         <option value={option}>
                             {option}
                         </option>
                     {/each}
-                </select>
+                    </select>
+                {:else}
+                    <select bind:value={treenode.type}>
+                        <option value="BOOLEAN">
+                            BOOLEAN
+                        </option>
+                    </select>
+                {/if}
                 </td>
             {/if}
             </tr>
             <tr>
             <td>Label</td>
-            <td><input bind:value={treenode.name} placeholder="placeholder question" class='px-2 py-1 placeholder-gray-400 text-gray-600 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:ring w-full'></td>
+            <td><input bind:value={treenode.name} placeholder="label that will show up in library" class='px-2 py-1 placeholder-gray-400 text-gray-600 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:ring w-full'></td>
             </tr>
             <tr>
             <td>Ask to</td>
