@@ -3,7 +3,7 @@
 
 	const fetchChildren = (async () => {
 		const response = await fetch(
-			`https://enterprise-search-develop.mytomorrows.com/v01/library/get_children`, {
+			`https://enterprise-search.mytomorrows.com/v01/library/get_children`, {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
@@ -16,6 +16,7 @@
 	
 </script>
 <main>
+	<div class='my-24'>
     {#await fetchChildren}
 	    <p>...waiting</p>
     {:then data}
@@ -23,4 +24,5 @@
     {:catch error}
         <p>An error occurred!</p>
     {/await}
+	</div>
 </main>
