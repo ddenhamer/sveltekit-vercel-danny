@@ -1,8 +1,12 @@
 <script>
     export let trial_ids;
     export let patient_id;
+    export let questions;
     
+    let enabled = true
+
     async function GenerateTsr() {
+        enabled = false
 		const res = await fetch(
 			`https://enterprise-search-develop.mytomorrows.com/v01/search/request_tsr`, {
 				method: 'POST',
@@ -14,7 +18,8 @@
                     email:email,
                     tsr_details:{
                         condition:"Duchenne Muscular Dystrophy",
-                        patient_id:patient_id
+                        patient_id: patient_id,
+                        questions: questions
                     }
                 })
 			}
@@ -36,7 +41,7 @@
     <div class="my-4 p-4 bg-gray-200 rounded-md">
         <p><span class="font-bold">Patient ID: </span><span>{patient_id}</span></p>
         <input class={input} bind:value={email} placeholder="your@email.com">
-        {#if email}
+        {#if (email && enabled)}
             <button on:click={GenerateTsr} class='btn bg-green-500 py-1 my-2'>Generate TSR</button>
         {:else}
             <button class='btn bg-gray-400 py-1 my-2 cursor-not-allowed'>Generate TSR</button>

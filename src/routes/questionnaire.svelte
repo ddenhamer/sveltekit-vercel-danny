@@ -102,7 +102,7 @@
 			</a>
 		{/each} -->
 		<h2>{$quiz.ineligible.join(', ')}</h2>
-		<GenerateTsr trial_ids={$quiz.trial_ids} patient_id={patient_id}/>
+		<GenerateTsr trial_ids={$quiz.trial_ids} patient_id={patient_id} questions={$quiz.questions}/>
 	</div>
 
 	<div>

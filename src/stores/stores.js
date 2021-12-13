@@ -6,7 +6,8 @@ export const quiz = writable({
     show:[],
     preview:[],
     answered_question:{},
-    ineligible:[]
+    ineligible:[],
+    questions:[]
 });
 
 export const enabled = writable('')

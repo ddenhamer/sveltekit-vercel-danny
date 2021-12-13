@@ -96,7 +96,7 @@
 			<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row {$enabled}' >Skip</button>
 			{:else if (qtype === 'FLOAT')}
 				<input class={input} bind:value={answer}>
-				<button on:click={() => processAnswer(answer)} on:click={toggleDisabled} class='btn bg-blue-500'>Submit</button>
+				<button on:click={() => processAnswer(answer)} on:click={toggleDisabled} class='btn bg-green-500'>Submit</button>
 				<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row' >Skip</button>
 			{/if}
 		{:else}
