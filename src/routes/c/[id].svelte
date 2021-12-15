@@ -19,7 +19,7 @@
         } else {
 
             const response = await fetch(
-                `https://enterprise-search-develop.mytomorrows.com/v01/library/get_node`, {
+                `https://enterprise-search.mytomorrows.com/v01/library/get_node`, {
                     method: 'POST',
                     headers: {
                     'Content-Type': 'application/json'
@@ -65,7 +65,7 @@
     async function setNode(treenode) {
         console.log(treenode)
 		const res = await fetch(
-			`https://enterprise-search-develop.mytomorrows.com/v01/library/set_node`, {
+			`https://enterprise-search.mytomorrows.com/v01/library/set_node`, {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
