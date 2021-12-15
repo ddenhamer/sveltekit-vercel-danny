@@ -64,14 +64,14 @@
 
 	let answer = 0;
 
-	let input = "appearance-none border rounded w-20 py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+	let input = "appearance-none border w-20 py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 
 	$: color = getColor(answer)
 	let text;
 	function getColor (answer) {
 		if (answer === true) {
 			text = "Yes"
-			return 'text-green-500'
+			return 'text-[#00a56a]'
 		} else if (answer === "SKIP") {
 			text = "Skipped"
 			return 'text-gray-500'
@@ -91,12 +91,12 @@
 		<span class="text-black">{name}</span>
 		{#if (!disabled)}
 			{#if (qtype === 'BOOLEAN')}
-			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-green-500 {$enabled}'>Y</button>
+			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-[#00a56a] {$enabled}'>Y</button>
 			<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 {$enabled}' >N</button>
 			<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row {$enabled}' >Skip</button>
 			{:else if (qtype === 'FLOAT')}
 				<input class={input} bind:value={answer}>
-				<button on:click={() => processAnswer(answer)} on:click={toggleDisabled} class='btn bg-green-500'>Submit</button>
+				<button on:click={() => processAnswer(answer)} on:click={toggleDisabled} class='btn bg-[#00a56a]'>Submit</button>
 				<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 row' >Skip</button>
 			{/if}
 		{:else}
@@ -108,6 +108,6 @@
 </div>
 <style>
 	.btn {
-    	@apply px-2 rounded-sm text-white;
+    	@apply px-2 text-white;
   	}
 </style>

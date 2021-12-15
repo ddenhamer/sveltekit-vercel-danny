@@ -29,7 +29,7 @@
 		];
 	}
 	
-	let input = "shadow appearance-none border-2 border-white rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500"
+	let input = "shadow appearance-none border-2 border-white w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#00a56a]"
 	
 	function toggleEnabled() {
 		if ($enabled === '') {
@@ -62,7 +62,7 @@
 		
 </script>
 <main>
-	<div class="shadow bg-gray-200 w-3/5 p-8 mt-24 mb-8 rounded-md">
+	<div class="bg-gray-100 w-3/5 p-8 mt-24 mb-8 rounded-lg shadow-md">
 		<div class="grid grid-cols-2 gap-8">
 			<div>
 				<p class="font-bold my-2">Patient ID</p>
@@ -70,8 +70,8 @@
 			</div>
 			<div>
 				<p class="font-bold my-2">Preset Conditions:</p>
-				<button class='bg-purple-300 rounded-sm text-white py-1 px-2 mb-1' on:click={loadDMD}>DMD</button>
-				<button class='bg-purple-300 rounded-sm text-white py-1 px-2 mb-1' on:click={loadPyramid1}>PYRAMID-1</button>
+				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={loadDMD}>DMD</button>
+				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={loadPyramid1}>PYRAMID-1</button>
 				<br>
 			</div>
 		</div>
@@ -79,15 +79,16 @@
 			{#if ($quiz.trial_ids.length === 0)}
 				<button class="btn bg-gray-400 p-2 cursor-not-allowed" on:click={updateQuiz}>Start Patient Screening</button>
 			{:else}
-				<button class="btn bg-green-500 p-2" on:click={updateQuiz}>Start Patient Screening</button>
+				<button class="btn bg-[#00a56a] p-2" on:click={updateQuiz}>Start Patient Screening</button>
 			{/if}
 		</div>
 	<div>
 	</div>
 	</div>
 
-	<div class="z-5 shadow bg-white rounded-md p-4 w-1/3 fixed top-24 right-16">
-		<span class='font-bold text-green-500'>Eligible</span><br>
+	<div class="z-5 bg-white w-1/3 fixed top-24 right-16 rounded-lg shadow-md">
+		<div class='p-4'>
+		<span class='font-bold text-[#00a56a]'>Eligible</span><br>
 		<!-- {#each $quiz.trial_ids as trial_id}
 		<a href="https://www.mytomorrows.com/search/en/study-details?studyId={trial_id}" target="_blank">	
 			<span class='hover:underline'>{trial_id}, </span>
@@ -102,6 +103,7 @@
 			</a>
 		{/each} -->
 		<h2>{$quiz.ineligible.join(', ')}</h2>
+		</div>
 		<GenerateTsr trial_ids={$quiz.trial_ids} patient_id={patient_id} questions={$quiz.questions}/>
 	</div>
 
@@ -121,6 +123,6 @@
 </main>
 <style>
 	.btn {
-    	@apply shadow px-2 rounded-sm text-white;
+    	@apply shadow px-2 text-white;
   	}
 </style>

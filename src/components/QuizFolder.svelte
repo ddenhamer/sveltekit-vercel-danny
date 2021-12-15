@@ -73,7 +73,7 @@
 	function getColor (answer) {
 		if (answer === true) {
 			text = "Yes"
-			return 'text-green-500'
+			return 'text-[#00a56a]'
 		} else if (answer === "SKIP") {
 			text = "Skipped"
 			return 'text-gray-500'
@@ -91,7 +91,7 @@
 	{#if (visibility === 'visible px-4 py-1')}
 	<span class="text-black">{name}</span>
 		{#if (!disabled)}
-			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-green-500 {$enabled}'>Y</button>
+			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-[#00a56a] {$enabled}'>Y</button>
 			<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 {$enabled}' >N</button>
 			<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 {$enabled}' >Skip</button>
 		{:else}
@@ -124,7 +124,7 @@
 	}
 
 	.btn {
-    	@apply px-2 rounded-sm text-white;
+    	@apply px-2 text-white;
   	}
 
 </style>
