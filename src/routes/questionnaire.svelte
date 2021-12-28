@@ -13,7 +13,9 @@
 				body: JSON.stringify({node_id:'0'})
 			}
 		)
-		return await response.json()
+		let list = await response.json()
+		list.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base' }))
+		return list
 	})()
 
 	let patient_id = ""

@@ -7,6 +7,8 @@
 	export let id;
 	export let children;
 
+	let sorted_children = children.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base' }))
+
 	function toggle() {
 		expanded = !expanded;
 	}
@@ -16,7 +18,7 @@
 
 {#if expanded}
 	<ul transition:slide={{duration:300}}>
-		{#each children as child}
+		{#each sorted_children as child}
 			<li>
 				{#if child.type === 'Category'}
 					<svelte:self {...child}/>
