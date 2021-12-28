@@ -1,4 +1,5 @@
 <script context="module">
+
     export async function load({page}) {
 		const id = page.params.id;
         const passed_parent_id = page.query.get('parent_id');
@@ -12,12 +13,8 @@
                 id: null,
                 new: true
             }
-            console.log(treenode.criterium)
-            return {props:{treenode}}
-            
-        
+            return {props:{treenode}}        
         } else {
-
             const response = await fetch(
                 `https://enterprise-search.mytomorrows.com/v01/library/get_node`, {
                     method: 'POST',
@@ -38,6 +35,17 @@
 </script>
 
 <script>
+	import { enabled } from '../../stores/stores.js';
+
+    function toggleEnabled() {
+		if ($enabled === '') {
+			$enabled = 'cursor-not-allowed opacity-50'
+		} else {
+			$enabled = ''
+		}
+		
+	}
+
     export let treenode;
     let result = null;
     let ask_to_options = [
@@ -63,7 +71,7 @@
     }
 
     async function setNode(treenode) {
-        console.log(treenode)
+        toggleEnabled()
 		const res = await fetch(
 			`https://enterprise-search.mytomorrows.com/v01/library/set_node`, {
 				method: 'POST',
@@ -156,7 +164,7 @@
             </tr>
         </tbody>
         </table>
-        <button on:click={setNode(treenode)} class="btn btn-blue my-2 text-white" >Update</button>
+        <button on:click={setNode(treenode)} class="bg-green-600 rounded px-2 py-1 m-2 text-white {$enabled}" >Update</button>
     </div>
 </main>
 
@@ -166,13 +174,4 @@
         @apply p-4;
     }
 
-    .btn {
-    	@apply px-4 py-2 my-4 rounded;
-  	}
-	.btn-blue {
-		@apply bg-green-600;
-	}
-	.btn-blue:hover {
-		@apply bg-green-700;
-	}
 </style>
