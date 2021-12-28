@@ -20,17 +20,6 @@
 
 	let patient_id = ""
 	
-	function loadDMD() {
-		$quiz.trial_ids = [
-			"NCT05126758","myT00003","myT00202101","NCT05096221","myT04275861","NCT03936894","NCT03340675","NCT03368742","NCT04585464","NCT04281485","NCT04060199","NCT04906460","NCT03067831","NCT02500381","NCT04184882","NCT04632940","NCT02196467","NCT04371666","NCT04956289","NCT04587908","NCT04336826"
-		];
-	}
-	function loadPyramid1() {
-		$quiz.trial_ids = [
-			"NCT04447118"
-		];
-	}
-	
 	let input = "shadow appearance-none border-2 border-white w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#00a56a]"
 	
 	function toggleEnabled() {
@@ -61,6 +50,40 @@
 			throw Error();
 		}
 	}
+
+	const getUserQuery = (condition) => `query {
+		aliases(where:{alias:"${condition}"}) {
+			aliasStudiedIn {
+				id
+			}
+		}
+	}`;
+
+	// let condition = 'Duchenne Muscular Dystrophy'
+	async function getTrialsForTerm(condition) {
+		toggleEnabled()
+		const res = await fetch(
+			`https://enterprise-search-develop.mytomorrows.com/gql/graphql`, {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json'
+				},
+				body: JSON.stringify({
+					query: getUserQuery(condition)
+				})
+			}
+			)
+			if (res.ok) {
+				let response = await res.json()
+				let data = response.data.aliases[0].aliasStudiedIn
+				let ids = data.map(a => a.id)
+				$quiz.trial_ids = ids
+				toggleEnabled()
+				return ids
+		} else {
+			throw Error();
+		}
+	}
 		
 </script>
 <main>
@@ -72,8 +95,9 @@
 			</div>
 			<div>
 				<p class="font-bold my-2">Preset Conditions:</p>
-				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={loadDMD}>DMD</button>
-				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={loadPyramid1}>PYRAMID-1</button>
+				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('Glioblastoma')}>GBM</button>
+				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('Duchenne Muscular Dystrophy')}>DMD</button>
+				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('myT_Jiangsu_Pyramid-1')}>PYRAMID-1</button>
 				<br>
 			</div>
 		</div>
@@ -91,20 +115,12 @@
 	<div class="z-5 bg-white w-1/3 fixed top-24 right-16 rounded-lg shadow-md">
 		<div class='p-4'>
 		<span class='font-bold text-[#00a56a]'>Eligible</span><br>
-		<!-- {#each $quiz.trial_ids as trial_id}
-		<a href="https://www.mytomorrows.com/search/en/study-details?studyId={trial_id}" target="_blank">	
-			<span class='hover:underline'>{trial_id}, </span>
-		</a>
-		{/each} -->
-		<h2>{$quiz.trial_ids.join(', ')}</h2>
+		<!-- <h2>{$quiz.trial_ids.join(', ')}</h2> -->
+		<h2>{$quiz.trial_ids.length}</h2>
 		<br>
 		<span class='font-bold text-red-600'>Ineligible</span><br>
-		<!-- {#each $quiz.ineligible as trial_id}
-			<a href="https://www.mytomorrows.com/search/en/study-details?studyId={trial_id}" target="_blank">	
-				<span class='hover:underline'>{trial_id}, </span>
-			</a>
-		{/each} -->
-		<h2>{$quiz.ineligible.join(', ')}</h2>
+		<!-- <h2>{$quiz.ineligible.join(', ')}</h2> -->
+		<h2>{$quiz.ineligible.length}</h2>
 		</div>
 		<GenerateTsr trial_ids={$quiz.trial_ids} patient_id={patient_id} questions={$quiz.questions}/>
 	</div>
