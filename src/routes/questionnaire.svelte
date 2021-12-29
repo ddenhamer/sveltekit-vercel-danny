@@ -2,6 +2,7 @@
 	import QuizFolder from '../components/QuizFolder.svelte';
 	import { quiz, enabled } from '../stores/stores.js';
 	import GenerateTsr from '../components/GenerateTSR.svelte';
+	import QuizDropdown from '../components/QuizDropdown.svelte';
 
 	const fetchChildren = (async () => {
 		const response = await fetch(

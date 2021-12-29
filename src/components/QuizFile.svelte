@@ -1,8 +1,10 @@
 <script>
+	import { quiz, enabled } from '../stores/stores.js';
 	export let name;
     export let id;
 	export let qtype;
-	import { quiz, enabled } from '../stores/stores.js';
+	export let answered = false;
+
 	
 	$quiz = $quiz
 
@@ -69,7 +71,7 @@
 	$: color = getColor(answer)
 	let text;
 	function getColor (answer) {
-		if (answer === true) {
+		if (answer === true || answered === true) {
 			text = "Yes"
 			return 'text-[#00a56a]'
 		} else if (answer === "SKIP") {
@@ -89,7 +91,7 @@
 <div class={visibility}>
 	{#if (visibility === 'visible px-5 py-1')}
 		<span class="text-black">{name}</span>
-		{#if (!disabled)}
+		{#if (!disabled) && !(answered)}
 			{#if (qtype === 'BOOLEAN')}
 			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-[#00a56a] {$enabled}'>Y</button>
 			<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 {$enabled}' >N</button>

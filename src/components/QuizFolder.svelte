@@ -1,11 +1,14 @@
 <script>
 	import QuizFile from '../components/QuizFile.svelte';
+	import QuizDropdown from './QuizDropdown.svelte';
 	import { slide } from 'svelte/transition'
 	import { quiz, enabled } from '../stores/stores.js';
 
 	export let name;
 	export let id;
 	export let children;
+	export let answered = false;
+	$: answer = ''
 
 	$quiz = $quiz
 
@@ -42,7 +45,7 @@
 		}
 	}
 
-	$: answer = ''
+	
 
 	function processAnswer (value) {
 		answer = value
@@ -71,7 +74,7 @@
 	$: color = getColor(answer)
 	let text;
 	function getColor (answer) {
-		if (answer === true) {
+		if (answer === true || answered === true) {
 			text = "Yes"
 			return 'text-[#00a56a]'
 		} else if (answer === "SKIP") {
@@ -86,11 +89,15 @@
 		}
 	}
 
+	let nonfloat_children = children.filter(obj => {
+		return obj.qtype !== "FLOAT"
+	})
+
 </script>
 <div class={visibility}>
 	{#if (visibility === 'visible px-4 py-1')}
 	<span class="text-black">{name}</span>
-		{#if (!disabled)}
+		{#if (!disabled) && !(answered)}
 			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-[#00a56a] {$enabled}'>Y</button>
 			<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 {$enabled}' >N</button>
 			<button on:click={() => processAnswer("SKIP")} on:click={toggleDisabled} class='btn bg-gray-300 {$enabled}' >Skip</button>
@@ -102,16 +109,29 @@
 	{/if}
 
 	<ul>
-		{#each children as child}
+		{#if ['0.5.0', '0.0'].includes(id)}
+			<li>	
+				<QuizDropdown children={nonfloat_children}/>
+			</li>
+			{#each children as child}
+			<li>
+				{#if (child.qtype === "FLOAT")}
+					<QuizFile {...child}/>
+				{/if}
+			</li>
+			{/each}
+
+		{:else}
+			{#each children as child}
 			<li>
 				{#if child.type === 'Category'}
 					<svelte:self {...child}/>
-					<!-- <svelte:self name={child.name} id={child.id} children={child.children}/> -->
 				{:else}
 					<QuizFile {...child}/>
 				{/if}
 			</li>
-		{/each}
+			{/each}
+		{/if}
 	</ul>
 </div>
 <style>
