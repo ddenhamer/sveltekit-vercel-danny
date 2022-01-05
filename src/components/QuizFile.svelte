@@ -44,7 +44,8 @@
 		answer = value
 		$quiz.answered_question = {
 			"criterium":id,
-			"answer":value
+			"answer":value,
+			"type":qtype
 		}
 		updateQuiz();
 	}

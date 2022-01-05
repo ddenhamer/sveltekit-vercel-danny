@@ -36,7 +36,7 @@
 		$quiz.answered_question = {
 			"criterium":child_id,
 			"answer":value,
-            "type":"dropdown"
+			"type":"BOOLEAN"
 		}
 		updateQuiz();
 	}
@@ -48,7 +48,6 @@
     let selected_options = [''];
 
 </script>
-<!-- const found = arr1.some(r=> arr2.includes(r)) -->
 
 <div class="mx-4">
 	{#if children.map(a => a.id).some(r=> $quiz.show.includes(r))}
