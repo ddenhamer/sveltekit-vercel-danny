@@ -23,7 +23,7 @@
 	async function updateQuiz() {
 		toggleEnabled()
 		const res = await fetch(
-			`https://enterprise-search-develop.mytomorrows.com/v01/search/gatekeeper_questionnaire`, {
+			`https://enterprise-search-develop.mytomorrows.com/v01/search/questionnaire`, {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
