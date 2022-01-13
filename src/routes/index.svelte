@@ -22,7 +22,10 @@
 		<span class="font-bold">Link to instructions:</span>
 		<ul>
 			<li>
-		<a href='https://mytomorrows-my.sharepoint.com/personal/danny_den_hamer_mytomorrows_com/_layouts/15/guestaccess.aspx?guestaccesstoken=ysydjyPPGMyC2BZ9VVCO4TagjrY3344WyyjfnUIl7t4%3D&docid=2_01cd29d7f3249410a8e464977a1450f02&rev=1&e=iACeU0'><span class='hover:underline'>- Criteria Tree</span></a>
+		<a href='https://mytomorrows.sharepoint.com/sites/Engineering/_layouts/15/guestaccess.aspx?guestaccesstoken=zvM1eNJrW7vnjQ4RFaHkJ3aSNR4Lkk7Eme%2FICTng5CE%3D&docid=2_175783af9a5a249028f2325be9e2c5c24&rev=1&e=OuJZPi'><span class='hover:underline'>- Annotation Instructions</span></a>
+			</li>
+			<li>
+				<a href='https://mytomorrows-my.sharepoint.com/personal/danny_den_hamer_mytomorrows_com/_layouts/15/guestaccess.aspx?guestaccesstoken=ysydjyPPGMyC2BZ9VVCO4TagjrY3344WyyjfnUIl7t4%3D&docid=2_01cd29d7f3249410a8e464977a1450f02&rev=1&e=iACeU0'><span class='hover:underline'>- Criteria Tree Format</span></a>
 			</li>
 		</ul>
 	</div>
