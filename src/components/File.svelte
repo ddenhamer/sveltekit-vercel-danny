@@ -1,9 +1,9 @@
 <script>
-	export let name;
+	export let label;
     export let id;
 </script>
 
-<a href='/c/{id}' class='hover:underline text-black hover:text-blue-800'><span>{name} [{id}]</span></a>
+<a href='/c/{id}' class='hover:underline text-black hover:text-blue-800'><span>{label} [{id}]</span></a>
 
 <style>
 	span {

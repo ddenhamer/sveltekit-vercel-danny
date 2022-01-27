@@ -1,9 +1,10 @@
 <script>
 	import File from '../components/File.svelte';
+	import Folder from './Folder.svelte';
 	import {slide} from 'svelte/transition'
 	
 	export let expanded = false;
-	export let name;
+	export let label;
 	export let id;
 	export let children;
 
@@ -14,16 +15,16 @@
 	}
 </script>
 
-<span class:expanded on:click={toggle}>{name} [{id}]</span>
+<span class:expanded on:click={toggle}>{label} [{id}]</span>
 
 {#if expanded}
 	<ul transition:slide={{duration:300}}>
 		{#each sorted_children as child}
 			<li>
-				{#if child.type === 'Category'}
-					<svelte:self {...child}/>
+				{#if child.properties.criterium === false}
+					<Folder label=child.properties.label id=child.id children=child.children />
 				{:else}
-					<File {...child}/>
+					<File label=child.properties.label id=child.id/>
 				{/if}
 			</li>
 		{/each}

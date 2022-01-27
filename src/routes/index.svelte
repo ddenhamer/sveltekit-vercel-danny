@@ -3,12 +3,12 @@
 
 	const fetchChildren = (async () => {
 		const response = await fetch(
-			`https://enterprise-search.mytomorrows.com/v01/library/get_children`, {
+			`https://enterprise-search-develop.mytomorrows.com/v01/library/get_full_tree`, {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({node_id:'0'})
+				body: JSON.stringify({node:{id:'0'}})
 			}
 		)
 		let list = await response.json()
@@ -34,7 +34,7 @@
     {#await fetchChildren}
 	    <p>...waiting</p>
     {:then data}
-        <Folder name="All Criteria" id='0' children={data} expanded/>
+        <Folder label="All Criteria" id='0' children={data} expanded/>
     {:catch error}
         <p>An error occurred!</p>
     {/await}

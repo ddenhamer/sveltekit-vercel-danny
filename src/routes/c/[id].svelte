@@ -16,12 +16,12 @@
             return {props:{treenode}}        
         } else {
             const response = await fetch(
-                `https://enterprise-search.mytomorrows.com/v01/library/get_node`, {
+                `https://enterprise-search-develop.mytomorrows.com/v01/library/get_node`, {
                     method: 'POST',
                     headers: {
                     'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({node_id:id})
+                    body: JSON.stringify({node:{'id':id}})
                 }
             )
             if (response.ok) {
@@ -60,7 +60,7 @@
    
     $: criterium_type = "Criterium"
 
-    $: treenode.criterium = mapCriteriumType(criterium_type)
+    $: treenode.properties.criterium = mapCriteriumType(criterium_type)
 
     function mapCriteriumType (cstring) {
         if (cstring === 'Criterium') {
@@ -73,7 +73,7 @@
     async function setNode(treenode) {
         toggleEnabled()
 		const res = await fetch(
-			`https://enterprise-search.mytomorrows.com/v01/library/set_node`, {
+			`https://enterprise-search-develop.mytomorrows.com/v01/library/set_node`, {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
@@ -124,11 +124,9 @@
             <tr>
             <td>Answer Type</td>
             {#if treenode.new !== true}
-                <td>{treenode.type}</td>
+                <td>{treenode.properties.type}</td>
             {:else}
                 <td>
-                
-                {#if treenode.criterium === true}
                     <select bind:value={treenode.type}>
                     {#each type_options as option}
                         <option value={option}>
@@ -136,24 +134,18 @@
                         </option>
                     {/each}
                     </select>
-                {:else}
-                    <select bind:value={treenode.type}>
-                        <option value="BOOLEAN">
-                            BOOLEAN
-                        </option>
-                    </select>
-                {/if}
+
                 </td>
             {/if}
             </tr>
             <tr>
             <td>Label</td>
-            <td><input bind:value={treenode.name} placeholder="label that will show up in library" class='px-2 py-1 placeholder-gray-400 text-gray-600 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:ring w-full'></td>
+            <td><input bind:value={treenode.properties.name} placeholder="label that will show up in library" class='px-2 py-1 placeholder-gray-400 text-gray-600 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:ring w-full'></td>
             </tr>
             <tr>
             <td>Ask to</td>
             <td>
-                <select bind:value={treenode.ask_to}>
+                <select bind:value={treenode.properties.ask_to}>
                     {#each ask_to_options as option}
                         <option value={option}>
                             {option}
