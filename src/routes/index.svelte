@@ -15,7 +15,6 @@
 		list.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base' }))
 		return list
 	})()
-	
 </script>
 <main>
 	<div class="bg-blue-100 rounded-md w-full mt-24 mb-8 px-8 py-4">

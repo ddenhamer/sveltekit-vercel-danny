@@ -13,9 +13,14 @@
 	function toggle() {
 		expanded = !expanded;
 	}
+
+	function copy(library_id) {
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(library_id);
+    }
 </script>
 
-<span class:expanded on:click={toggle}>{label} [{id}]</span>
+<span class:expanded on:click={toggle} on:click={() => copy(id)}>{label} [{id}]</span>
 <a href='/c/{id}'>
 	<button class="btn text-sm text-gray-300 hover:text-gray-500">edit</button>
 </a>
