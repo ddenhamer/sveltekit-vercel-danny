@@ -9,9 +9,13 @@
         
         if (id.startsWith('create')) {
             const treenode = {
-                parent_id:passed_parent_id,
                 id: null,
-                new: true
+                parent_id:passed_parent_id,
+                new: true,
+                properties: {
+                    label: null,
+                    type:"BOOLEAN",
+                    ask_to:"patient"                }
             }
             return {props:{treenode}}        
         } else {
@@ -35,55 +39,53 @@
 </script>
 
 <script>
-	import { enabled } from '../../stores/stores.js';
-
+    
+    import { enabled } from '../../stores/stores.js';
+    
     function toggleEnabled() {
-		if ($enabled === '') {
-			$enabled = 'cursor-not-allowed opacity-50'
+        if ($enabled === '') {
+            $enabled = 'cursor-not-allowed opacity-50'
 		} else {
-			$enabled = ''
+            $enabled = ''
 		}
 		
 	}
-
+    
     export let treenode;
-    let result = null;
+    
     let ask_to_options = [
         'patient', 'physician', 'patient-nav'
     ]
     let type_options = [
          'BOOLEAN', 'FLOAT'
     ]
-    let criterium_options = [
-       "Criterium", "Gatekeeper"
-    ]
-   
-    $: criterium_type = "Criterium"
-
-    $: treenode.properties.criterium = mapCriteriumType(criterium_type)
-
-    function mapCriteriumType (cstring) {
-        if (cstring === 'Criterium') {
-            return true
-        } else {
-            return false
-        }
-    }
 
     async function setNode(treenode) {
         toggleEnabled()
-		const res = await fetch(
-			`https://enterprise-search-develop.mytomorrows.com/v01/library/set_node`, {
+        if (treenode.id) {
+            const res = await fetch(
+                `https://enterprise-search-develop.mytomorrows.com/v01/library/update_node`, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({node:treenode})
+                })
+            const json = await res.json()
+            setTimeout(() => {  window.location.href = "/"; }, 750);
+        } else {
+            toggleEnabled()
+            const res = await fetch(
+			`https://enterprise-search-develop.mytomorrows.com/v01/library/create_node`, {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({node:treenode})
 			})
-        const json = await res.json()
-		result = JSON.stringify(json)
-        setTimeout(() => {  window.location.href = "/"; }, 500);
-        
+            const json = await res.json()
+            setTimeout(() => {  window.location.href = "/"; }, 750);
+        }
     }
 
 </script>
@@ -103,23 +105,7 @@
             </tr>
             <tr>
             <td>Parent ID</td>
-            <td>{treenode.parent_id}</td>
-            </tr>
-            <tr>
-            <td>Type</td>
-            {#if treenode.new !== true}
-                <td>{criterium_type}</td>
-            {:else}
-                <td>
-                <select bind:value={criterium_type}>
-                    {#each criterium_options as option}
-                        <option value={option}>
-                            {option}
-                        </option>
-                    {/each}
-                </select>
-            </td>
-            {/if}
+            <td><input bind:value={treenode.parent_id} class='px-2 py-1 placeholder-gray-400 text-gray-600 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:ring w-full'></td>
             </tr>
             <tr>
             <td>Answer Type</td>
@@ -127,7 +113,7 @@
                 <td>{treenode.properties.type}</td>
             {:else}
                 <td>
-                    <select bind:value={treenode.type}>
+                    <select bind:value={treenode.properties.type}>
                     {#each type_options as option}
                         <option value={option}>
                             {option}
@@ -140,7 +126,7 @@
             </tr>
             <tr>
             <td>Label</td>
-            <td><input bind:value={treenode.properties.name} placeholder="label that will show up in library" class='px-2 py-1 placeholder-gray-400 text-gray-600 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:ring w-full'></td>
+            <td><input bind:value={treenode.properties.label} placeholder="label that will show up in library" class='px-2 py-1 placeholder-gray-400 text-gray-600 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:ring w-full'></td>
             </tr>
             <tr>
             <td>Ask to</td>

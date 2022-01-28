@@ -8,7 +8,7 @@
 	export let id;
 	export let children;
 
-	let sorted_children = children.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base' }))
+	let sorted_children = children.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base'}))
 
 	function toggle() {
 		expanded = !expanded;
@@ -22,9 +22,9 @@
 		{#each sorted_children as child}
 			<li>
 				{#if child.properties.criterium === false}
-					<Folder label=child.properties.label id=child.id children=child.children />
+					<Folder label={child.properties.label} id={child.id} children={child.children} />
 				{:else}
-					<File label=child.properties.label id=child.id/>
+					<File label={child.properties.label} id={child.id}/>
 				{/if}
 			</li>
 		{/each}
