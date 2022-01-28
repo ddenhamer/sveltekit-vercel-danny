@@ -6,12 +6,12 @@
 
 	const fetchChildren = (async () => {
 		const response = await fetch(
-			`https://enterprise-search-develop.mytomorrows.com/v01/library/get_children`, {
+			`https://enterprise-search-develop.mytomorrows.com/v01/library/get_full_tree`, {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({node_id:'0'})
+				body: JSON.stringify({node:{id:'0'}})
 			}
 		)
 		let list = await response.json()
@@ -132,7 +132,7 @@
 		{:then data}
 			{#each data as rootNode}
 				<div>
-					<QuizFolder name={rootNode.name} id={rootNode.id} children={rootNode.children}/>
+					<QuizFolder label={rootNode.properties.label} id={rootNode.id} children={rootNode.children}/>
 				</div>
 			{/each}
 		{:catch error}

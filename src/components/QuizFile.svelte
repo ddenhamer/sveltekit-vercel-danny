@@ -1,6 +1,6 @@
 <script>
 	import { quiz, enabled } from '../stores/stores.js';
-	export let name;
+	export let label;
     export let id;
 	export let qtype;
 	export let answered = false;
@@ -43,7 +43,7 @@
 	function processAnswer (value) {
 		answer = value
 		$quiz.answered_question = {
-			"criterium":id,
+			"id":id,
 			"answer":value,
 			"type":qtype
 		}
@@ -91,7 +91,7 @@
 
 <div class={visibility}>
 	{#if (visibility === 'visible px-5 py-1')}
-		<span class="text-black">{name}</span>
+		<span class="text-black">{label}</span>
 		{#if (!disabled) && !(answered)}
 			{#if (qtype === 'BOOLEAN')}
 			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-[#00a56a] {$enabled}'>Y</button>
@@ -106,7 +106,7 @@
 			<span class='{color} opacity-50 font-bold'>{text}</span>
 		{/if}
 	{:else if (visibility === 'preview px-5 py-1')}
-		<span class="text-gray-300">{name}</span>
+		<span class="text-gray-300">{label}</span>
 	{/if}
 </div>
 <style>

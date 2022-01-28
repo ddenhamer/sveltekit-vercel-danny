@@ -3,8 +3,9 @@
 	import QuizDropdown from './QuizDropdown.svelte';
 	import { slide } from 'svelte/transition'
 	import { quiz, enabled } from '../stores/stores.js';
+	import QuizFolder from './QuizFolder.svelte';
 
-	export let name;
+	export let label;
 	export let id;
 	export let children;
 	export let answered = false;
@@ -50,7 +51,7 @@
 	function processAnswer (value) {
 		answer = value
 		$quiz.answered_question = {
-			"criterium":id,
+			"id":id,
 			"answer":value,
 			"type":"BOOLEAN"
 		}
@@ -91,13 +92,13 @@
 	}
 
 	let nonfloat_children = children.filter(obj => {
-		return obj.qtype !== "FLOAT"
+		return obj.properties.type !== "FLOAT"
 	})
 
 </script>
 <div class={visibility}>
 	{#if (visibility === 'visible px-4 py-1')}
-	<span class="text-black">{name}</span>
+	<span class="text-black">{label}</span>
 		{#if (!disabled) && !(answered)}
 			<button on:click={() => processAnswer(true)} on:click={toggleDisabled} class='btn bg-[#00a56a] {$enabled}'>Y</button>
 			<button on:click={() => processAnswer(false)} on:click={toggleDisabled} class='btn bg-red-500 {$enabled}' >N</button>
@@ -106,7 +107,7 @@
 			<span class='{color} capitalize opacity-50'>{text}</span>
 		{/if}
 	{:else if (visibility === 'preview px-4 py-1')}
-		<span class="text-gray-300">{name}</span>
+		<span class="text-gray-300">{label}</span>
 	{/if}
 
 	<ul>
@@ -116,8 +117,8 @@
 			</li>
 			{#each children as child}
 			<li>
-				{#if (child.qtype === "FLOAT")}
-					<QuizFile {...child}/>
+				{#if (child.properties.type === "FLOAT")}
+					<QuizFile label={child.properties.label} id={child.id} qtype={child.properties.type}/>
 				{/if}
 			</li>
 			{/each}
@@ -125,10 +126,10 @@
 		{:else}
 			{#each children as child}
 			<li>
-				{#if child.type === 'Category'}
-					<svelte:self {...child}/>
+				{#if child.properties.criterium === false}
+					<QuizFolder label={child.properties.label} id={child.id} children={child.children}/>
 				{:else}
-					<QuizFile {...child}/>
+					<QuizFile label={child.properties.label} id={child.id} qtype={child.properties.type}/>
 				{/if}
 			</li>
 			{/each}
