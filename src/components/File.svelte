@@ -3,7 +3,10 @@
     export let id;
 </script>
 
-<a href='/c/{id}' class='hover:underline text-black hover:text-blue-800'><span>{label} [{id}]</span></a>
+<span>{label} [{id}]</span>
+<a href='/c/{id}'>
+	<button class="btn text-sm text-gray-300 hover:text-gray-500">edit</button>
+</a>
 
 <style>
 	span {
@@ -11,4 +14,7 @@
 		background: 0 0.1em no-repeat;
 		background-size: 1em 1em;
 	}
+	.btn {
+    	@apply px-1 rounded-sm;
+  	}
 </style>

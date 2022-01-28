@@ -16,6 +16,9 @@
 </script>
 
 <span class:expanded on:click={toggle}>{label} [{id}]</span>
+<a href='/c/{id}'>
+	<button class="btn text-sm text-gray-300 hover:text-gray-500">edit</button>
+</a>
 
 {#if expanded}
 	<ul transition:slide={{duration:300}}>
@@ -64,12 +67,12 @@
 	}
 
 	.btn {
-    	@apply px-4 rounded-sm text-white;
+    	@apply px-1 rounded-sm;
   	}
 	.btn-green {
-		@apply bg-green-600;
+		@apply bg-green-600 text-white;
 	}
 	.btn-green:hover {
-		@apply bg-green-700;
+		@apply bg-green-700 text-white;
 	}
 </style>
