@@ -34,7 +34,7 @@
 
     function processAnswer (value, child_id) {
 		$quiz.answered_question = {
-			"criterium":child_id,
+			"id":child_id,
 			"answer":value,
 			"type":"BOOLEAN"
 		}
@@ -55,7 +55,7 @@
             {#each children as child}
                 {#if $quiz.preview.includes(child.id) && !(selected_options.includes(child.id))}
                     <option value={child.id}>
-                        {child.name}
+                        {child.properties.label}
                     </option>
                 {/if}
             {/each}
@@ -68,10 +68,10 @@
 		{#each children as child}
             {#if selected_options.includes(child.id)}
                 <li>
-                    {#if child.type === 'Category'}
-                        <QuizFolder name={child.name} id={child.id} children={child.children} answered={true}/>
+                    {#if child.properties.criterium === false}
+                        <QuizFolder label={child.properties.label} id={child.id} children={child.children} answered={true}/>
                     {:else}
-                        <QuizFile {...child} answered={true}/>
+                        <QuizFile label={child.properties.label} id={child.id} qtype={child.properties.type} answered={true}/>
                     {/if}
                 </li>
             {/if}

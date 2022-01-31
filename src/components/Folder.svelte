@@ -1,29 +1,38 @@
 <script>
 	import File from '../components/File.svelte';
+	import Folder from './Folder.svelte';
 	import {slide} from 'svelte/transition'
 	
 	export let expanded = false;
-	export let name;
+	export let label;
 	export let id;
 	export let children;
 
-	let sorted_children = children.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base' }))
+	let sorted_children = children.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base'}))
 
 	function toggle() {
 		expanded = !expanded;
 	}
+
+	function copy(library_id) {
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(library_id);
+    }
 </script>
 
-<span class:expanded on:click={toggle}>{name} [{id}]</span>
+<span class:expanded on:click={toggle} on:click={() => copy(id)}>{label} [{id}]</span>
+<a href='/c/{id}'>
+	<button class="btn text-sm text-gray-300 hover:text-gray-500">edit</button>
+</a>
 
 {#if expanded}
 	<ul transition:slide={{duration:300}}>
 		{#each sorted_children as child}
 			<li>
-				{#if child.type === 'Category'}
-					<svelte:self {...child}/>
+				{#if child.properties.criterium === false}
+					<Folder label={child.properties.label} id={child.id} children={child.children} />
 				{:else}
-					<File {...child}/>
+					<File label={child.properties.label} id={child.id}/>
 				{/if}
 			</li>
 		{/each}
@@ -63,12 +72,12 @@
 	}
 
 	.btn {
-    	@apply px-4 rounded-sm text-white;
+    	@apply px-1 rounded-sm;
   	}
 	.btn-green {
-		@apply bg-green-600;
+		@apply bg-green-600 text-white;
 	}
 	.btn-green:hover {
-		@apply bg-green-700;
+		@apply bg-green-700 text-white;
 	}
 </style>

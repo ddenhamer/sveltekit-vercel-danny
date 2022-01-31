@@ -6,12 +6,12 @@
 
 	const fetchChildren = (async () => {
 		const response = await fetch(
-			`https://enterprise-search-develop.mytomorrows.com/v01/library/get_children`, {
+			`https://enterprise-search-develop.mytomorrows.com/v01/library/get_full_tree`, {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({node_id:'0'})
+				body: JSON.stringify({node:{id:'C'}})
 			}
 		)
 		let list = await response.json()
@@ -98,7 +98,6 @@
 				<p class="font-bold my-2">Preset Conditions:</p>
 				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('Glioblastoma')}>GBM</button>
 				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('Duchenne Muscular Dystrophy')}>DMD</button>
-				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('myT_Jiangsu_Pyramid-1')}>PYRAMID-1</button>
 				<br>
 			</div>
 		</div>
@@ -132,7 +131,7 @@
 		{:then data}
 			{#each data as rootNode}
 				<div>
-					<QuizFolder name={rootNode.name} id={rootNode.id} children={rootNode.children}/>
+					<QuizFolder label={rootNode.properties.label} id={rootNode.id} children={rootNode.children}/>
 				</div>
 			{/each}
 		{:catch error}
