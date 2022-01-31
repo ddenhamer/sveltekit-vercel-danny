@@ -8,7 +8,7 @@
 				headers: {
 				'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({node:{id:'0'}})
+				body: JSON.stringify({node:{id:'C'}})
 			}
 		)
 		let list = await response.json()
@@ -33,7 +33,7 @@
     {#await fetchChildren}
 	    <p>...waiting</p>
     {:then data}
-        <Folder label="All Criteria" id='0' children={data} expanded/>
+        <Folder label="All Criteria" id='C' children={data} expanded/>
     {:catch error}
         <p>An error occurred!</p>
     {/await}

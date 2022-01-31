@@ -11,7 +11,7 @@
 				headers: {
 				'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({node:{id:'0'}})
+				body: JSON.stringify({node:{id:'C'}})
 			}
 		)
 		let list = await response.json()
@@ -98,7 +98,6 @@
 				<p class="font-bold my-2">Preset Conditions:</p>
 				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('Glioblastoma')}>GBM</button>
 				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('Duchenne Muscular Dystrophy')}>DMD</button>
-				<button class='bg-purple-300 text-white py-2 px-2 mb-1' on:click={() => getTrialsForTerm('myT_Jiangsu_Pyramid-1')}>PYRAMID-1</button>
 				<br>
 			</div>
 		</div>
