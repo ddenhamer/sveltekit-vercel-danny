@@ -20,9 +20,9 @@
     }
 </script>
 
-<span class:expanded on:click={toggle} on:click={() => copy(id)}>{label} [{id}]</span>
+<span class:expanded on:click={toggle} on:click={() => copy(id)} class="dark:text-slate-400">{label} [{id}]</span>
 <a href='/c/{id}'>
-	<button class="btn text-sm text-gray-300 hover:text-gray-500">edit</button>
+	<button class="btn text-sm text-gray-300 hover:text-gray-500 dark:hover:bg-gray-500 dark:text-slate-400">edit</button>
 </a>
 
 {#if expanded}
@@ -38,7 +38,7 @@
 		{/each}
 		<li class="mx-6">
 			<a href='/c/create?parent_id={id}'>
-				<button class="btn btn-green text-sm">Add new</button>
+				<button class="btn btn-green text-sm bg-green-500 dark:bg-slate-600 dark:hover:bg-gray-500 dark:text-slate-400">Add new</button>
 			</a>
 		</li>
 		
@@ -50,21 +50,15 @@
 <style>
 	span {
 		padding: 0 0 0 1.5em;
-		background: url(tutorial/icons/folder.svg) 0 0.1em no-repeat;
 		background-size: 1em 1em;
 		font-weight: bold;
 		cursor: pointer;
-	}
-
-	.expanded {
-		background-image: url(tutorial/icons/folder-open.svg);
 	}
 
 	ul {
 		padding: 0.2em 0 0 0.5em;
 		margin: 0 0 0 0.5em;
 		list-style: none;
-		border-left: 1px solid #eee;
 	}
 
 	li {
@@ -74,10 +68,5 @@
 	.btn {
     	@apply px-1 rounded-sm;
   	}
-	.btn-green {
-		@apply bg-green-600 text-white;
-	}
-	.btn-green:hover {
-		@apply bg-green-700 text-white;
-	}
+
 </style>

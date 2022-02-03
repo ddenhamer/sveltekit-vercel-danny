@@ -8,9 +8,9 @@
     }
 </script>
 
-<span on:click={() => copy(id)}>{label} [{id}]</span>
+<span on:click={() => copy(id)} class="dark:text-slate-400">{label} [{id}]</span>
 <a href='/c/{id}'>
-	<button class="btn text-sm text-gray-300 hover:text-gray-500">edit</button>
+	<button class="btn text-sm text-gray-300 hover:text-gray-500 dark:text-slate-400">edit</button>
 </a>
 
 <style>
