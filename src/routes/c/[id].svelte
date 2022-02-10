@@ -88,6 +88,27 @@
         }
     }
 
+    async function deleteNode(treenode) {
+        toggleEnabled()
+        const res = await fetch(
+            `https://enterprise-search-develop.mytomorrows.com/v01/library/delete_node`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({node:{
+                    id:treenode.id
+                }})
+            })
+        if (res.status === 400) {
+            const json = await res.json();
+            toggleEnabled();
+            alert(json.message);
+        } else {
+            setTimeout(() => {  window.location.href = "/"; }, 250);
+        }
+    }
+
 </script>
 <main>    
     <div class="my-24 mx-8">
@@ -142,7 +163,8 @@
             </tr>
         </tbody>
         </table>
-        <button on:click={setNode(treenode)} class="bg-green-600 rounded px-2 py-1 m-2 text-white {$enabled}" >Update</button>
+        <button on:click={setNode(treenode)} class="bg-green-600 rounded px-2 py-1 my-2 mr-1 text-white {$enabled}" >Update</button>
+        <button on:click={deleteNode(treenode)} class="bg-red-600 rounded px-2 py-1 my-2 text-white {$enabled}" >Delete</button>
     </div>
 </main>
 
